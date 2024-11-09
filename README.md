@@ -22,6 +22,7 @@ cd example
 ```
 
 The generated code structure is as follows:
+
 ```
 src/db/
 ├── accounts
@@ -35,8 +36,10 @@ src/db/
 └── posts_service.rs
 ```
 Model code:
+
 ![Model code](./assets/code_generate_model.png)
 
 Service code:
+
 ![Service code](./assets/code_generate_service.png)
 
