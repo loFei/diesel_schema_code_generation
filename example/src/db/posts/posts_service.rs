@@ -12,10 +12,10 @@ impl DbPostsService {
 			Ok(list) => return list,
 			Err(e) => {
 				println!("Error loading posts: {}", e);
-		}
+			}
 		}
 
-			Vec::new()
+		Vec::new()
 	}
 
 	pub fn add_posts(conn: &mut SqliteConnection, new_model: &NewDbPostsModel) -> DbPostsModel {

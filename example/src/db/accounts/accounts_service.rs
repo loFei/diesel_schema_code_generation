@@ -12,10 +12,10 @@ impl DbAccountsService {
 			Ok(list) => return list,
 			Err(e) => {
 				println!("Error loading accounts: {}", e);
-		}
+			}
 		}
 
-			Vec::new()
+		Vec::new()
 	}
 
 	pub fn add_accounts(conn: &mut SqliteConnection, new_model: &NewDbAccountsModel) -> DbAccountsModel {

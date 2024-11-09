@@ -2,4 +2,4 @@
 
 diesel migration run
 
-bash ../codegen.bash ./src/schema.rs ./src/db
+bash ../codegen.sh ./src/schema.rs ./src/db
