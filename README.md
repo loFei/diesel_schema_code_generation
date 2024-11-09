@@ -31,9 +31,9 @@ src/db/
 │   └── mod.rs
 ├── mod.rs
 └── posts
-├── mod.rs
-├── posts_model.rs
-└── posts_service.rs
+    ├── mod.rs
+    ├── posts_model.rs
+    └── posts_service.rs
 ```
 Model code:
 
