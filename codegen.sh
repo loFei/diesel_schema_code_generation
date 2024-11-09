@@ -62,7 +62,8 @@ generate_model_code() {
     case "$field_type" in
       Integer) rust_type="i32";;
       BigInt) rust_type="i64";;
-      Float) rust_type="f64";;
+      Float) rust_type="f32";;
+      Double) rust_type="f64";;
       Text) rust_type="String";;
       Binary) rust_type="Vec<u8>";;
       Bool) rust_type="bool";;
@@ -76,7 +77,8 @@ generate_model_code() {
     case "$field_type" in
       Integer) rust_ref_type="i32";;
       BigInt) rust_ref_type="i64";;
-      Float) rust_ref_type="f64";;
+      Float) rust_ref_type="f32";;
+      Double) rust_ref_type="f64";;
       Text) rust_ref_type="&'a str";;
       Binary) rust_ref_type="&'a Vec<u8>";;
       Bool) rust_ref_type="bool";;
@@ -90,6 +92,15 @@ generate_model_code() {
     field_cache+=("$field_name,$is_opt_field_type,$rust_type,Option<$rust_type>,$rust_ref_type,Option<$rust_ref_type>")
   done
 
+  # check has ref
+  local struct_ref_flag=0
+  for field in "${field_cache[@]}"; do
+    IFS="," read -r field_name is_opt_field_type rust_type opt_rust_type rust_ref_type opt_rust_ref_type <<< "$field"
+    if [[ "$rust_ref_type" == *'&'* ]]; then
+        struct_ref_flag=1
+        break
+    fi
+  done
 
   local rust_code="//! ${model_name}\n\n"
   rust_code+="use diesel::prelude::*;\n\n"
@@ -112,7 +123,11 @@ generate_model_code() {
   # new table model
   rust_code+="#[derive(Insertable)]\n"
   rust_code+="#[diesel(table_name = crate::schema::$table_name)]\n"
-  rust_code+="pub struct New$model_name<'a> {\n"
+  if [ $struct_ref_flag -eq 1 ]; then
+    rust_code+="pub struct New$model_name<'a> {\n"
+  else
+    rust_code+="pub struct New$model_name {\n"
+  fi
   for field in "${field_cache[@]}"; do
     IFS="," read -r field_name is_opt_field_type rust_type opt_rust_type rust_ref_type opt_rust_ref_type <<< "$field"
     if [ "$field_name" == "id" ]; then
@@ -129,7 +144,11 @@ generate_model_code() {
   # update model
   rust_code+="#[derive(AsChangeset)]\n"
   rust_code+="#[diesel(table_name = crate::schema::$table_name)]\n"
-  rust_code+="pub struct Update$model_name<'a> {\n"
+  if [ $struct_ref_flag -eq 1 ]; then
+    rust_code+="pub struct Update$model_name<'a> {\n"
+  else
+    rust_code+="pub struct Update$model_name {\n"
+  fi
   for field in "${field_cache[@]}"; do
     IFS="," read -r field_name is_opt_field_type rust_type opt_rust_type rust_ref_type opt_rust_ref_type <<< "$field"
     if [ "$field_name" == "id" ]; then
@@ -150,7 +169,7 @@ generate_service_code() {
   local table_snake_name=$(to_snake_case "$table_name")
   local model_name="Db$(to_camel_case "$table_name")Model"
   local output_file="$output_dir/${table_snake_name}/${table_snake_name}_service.rs"
-  
+
   if [ -f "$output_file" ]; then
     echo -e "${YELLOW}==> service file $output_file is exists, skip${RESET}"
     return
@@ -244,7 +263,7 @@ generate_db_mod_code() {
   for table in "${tables[@]}"; do
     rust_code+="mod ${table};\n"
   done
-  
+
   rust_code+="\n"
 
   for table in "${tables[@]}"; do
