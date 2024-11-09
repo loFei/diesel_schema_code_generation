@@ -1,0 +1,18 @@
+-- Your SQL goes here
+CREATE TABLE IF NOT EXISTS accounts (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  user_name VARCHAR NOT NULL,
+  register_date DATETIME NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS posts (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  title VARCHAR NOT NULL,
+  body TEXT NOT NULL,
+  published BOOLEAN NOT NULL DEFAULT 0,
+  poster_id INTEGER NOT NULL,
+  create_date DATETIME NOT NULL,
+  modify_date DATETIME,
+  FOREIGN KEY (poster_id) REFERENCES accounts(id)
+);
+
