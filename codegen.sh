@@ -235,7 +235,7 @@ generate_model_code() {
   else
     rust_code+="impl Update$model_name {\n"
   fi
-  rust_code+="\tpub fn create() -> Self{\n"
+  rust_code+="\tpub fn create() -> Self {\n"
   rust_code+="\t\tSelf {\n"
   for field in "${field_cache[@]}"; do
     IFS="," read -r field_name is_opt_field_type rust_type opt_rust_type rust_ref_type opt_rust_ref_type rust_default_value <<< "$field"
