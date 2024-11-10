@@ -1,5 +1,6 @@
 //! DbPostsModel
 
+use chrono::Local;
 use diesel::prelude::*;
 
 #[derive(Queryable, Selectable)]
@@ -22,8 +23,46 @@ pub struct NewDbPostsModel<'a> {
 	pub body: &'a str,
 	pub published: bool,
 	pub poster_id: i32,
-	pub create_date: &'a chrono::NaiveDateTime,
-	pub modify_date: Option<&'a chrono::NaiveDateTime>,
+	pub create_date: chrono::NaiveDateTime,
+	pub modify_date: Option<chrono::NaiveDateTime>,
+}
+
+impl<'a> NewDbPostsModel<'a> {
+	pub fn create() -> Self {
+		Self {
+			title: "",
+			body: "",
+			published: false,
+			poster_id: 0,
+			create_date: Local::now().naive_local(),
+			modify_date: None,
+		}
+	}
+
+	pub fn set_title(&mut self, value: &'a str) {
+		self.title = value;
+	}
+
+	pub fn set_body(&mut self, value: &'a str) {
+		self.body = value;
+	}
+
+	pub fn set_published(&mut self, value: bool) {
+		self.published = value;
+	}
+
+	pub fn set_poster_id(&mut self, value: i32) {
+		self.poster_id = value;
+	}
+
+	pub fn set_create_date(&mut self, value: chrono::NaiveDateTime) {
+		self.create_date = value;
+	}
+
+	pub fn set_modify_date(&mut self, value: chrono::NaiveDateTime) {
+		self.modify_date = Some(value);
+	}
+
 }
 
 #[derive(AsChangeset)]
@@ -33,8 +72,8 @@ pub struct UpdateDbPostsModel<'a> {
 	pub body: Option<&'a str>,
 	pub published: Option<bool>,
 	pub poster_id: Option<i32>,
-	pub create_date: Option<&'a chrono::NaiveDateTime>,
-	pub modify_date: Option<&'a chrono::NaiveDateTime>,
+	pub create_date: Option<chrono::NaiveDateTime>,
+	pub modify_date: Option<chrono::NaiveDateTime>,
 }
 
 impl<'a> UpdateDbPostsModel<'a> {
@@ -65,11 +104,11 @@ impl<'a> UpdateDbPostsModel<'a> {
 		self.poster_id = Some(value);
 	}
 
-	pub fn set_create_date(&mut self, value: &'a chrono::NaiveDateTime) {
+	pub fn set_create_date(&mut self, value: chrono::NaiveDateTime) {
 		self.create_date = Some(value);
 	}
 
-	pub fn set_modify_date(&mut self, value: &'a chrono::NaiveDateTime) {
+	pub fn set_modify_date(&mut self, value: chrono::NaiveDateTime) {
 		self.modify_date = Some(value);
 	}
 

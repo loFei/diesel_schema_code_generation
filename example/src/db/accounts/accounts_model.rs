@@ -1,5 +1,6 @@
 //! DbAccountsModel
 
+use chrono::Local;
 use diesel::prelude::*;
 
 #[derive(Queryable, Selectable)]
@@ -15,14 +16,32 @@ pub struct DbAccountsModel {
 #[diesel(table_name = crate::schema::accounts)]
 pub struct NewDbAccountsModel<'a> {
 	pub user_name: &'a str,
-	pub register_date: &'a chrono::NaiveDateTime,
+	pub register_date: chrono::NaiveDateTime,
+}
+
+impl<'a> NewDbAccountsModel<'a> {
+	pub fn create() -> Self {
+		Self {
+			user_name: "",
+			register_date: Local::now().naive_local(),
+		}
+	}
+
+	pub fn set_user_name(&mut self, value: &'a str) {
+		self.user_name = value;
+	}
+
+	pub fn set_register_date(&mut self, value: chrono::NaiveDateTime) {
+		self.register_date = value;
+	}
+
 }
 
 #[derive(AsChangeset)]
 #[diesel(table_name = crate::schema::accounts)]
 pub struct UpdateDbAccountsModel<'a> {
 	pub user_name: Option<&'a str>,
-	pub register_date: Option<&'a chrono::NaiveDateTime>,
+	pub register_date: Option<chrono::NaiveDateTime>,
 }
 
 impl<'a> UpdateDbAccountsModel<'a> {
@@ -37,7 +56,7 @@ impl<'a> UpdateDbAccountsModel<'a> {
 		self.user_name = Some(value);
 	}
 
-	pub fn set_register_date(&mut self, value: &'a chrono::NaiveDateTime) {
+	pub fn set_register_date(&mut self, value: chrono::NaiveDateTime) {
 		self.register_date = Some(value);
 	}
 

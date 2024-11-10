@@ -20,10 +20,9 @@ fn main() {
 
     let reg_date = Local::now().naive_local();
 
-    let new_account = NewDbAccountsModel {
-        user_name: "Alice",
-        register_date: &reg_date,
-    };
+    let mut new_account = NewDbAccountsModel::create();
+    new_account.user_name = "Alice";
+    new_account.register_date = reg_date;
     let acc_data = DbAccountsService::add_accounts(conn, &new_account);
     println!(
         "==> add_account account result:\nid: {}, user_name: {}, register_date: {}",
