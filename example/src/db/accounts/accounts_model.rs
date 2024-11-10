@@ -32,6 +32,7 @@ impl<'a> UpdateDbAccountsModel<'a> {
 			register_date: None,
 		}
 	}
+
 	pub fn set_user_name(&mut self, value: &'a str) {
 		self.user_name = Some(value);
 	}

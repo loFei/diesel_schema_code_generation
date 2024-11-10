@@ -173,7 +173,7 @@ generate_model_code() {
     rust_code+="\t\t\t$field_name: None,\n"
   done
   rust_code+="\t\t}\n"
-  rust_code+="\t}\n"
+  rust_code+="\t}\n\n"
   for field in "${field_cache[@]}"; do
     IFS="," read -r field_name is_opt_field_type rust_type opt_rust_type rust_ref_type opt_rust_ref_type <<< "$field"
     if [ "$field_name" == "id" ]; then

@@ -48,6 +48,7 @@ impl<'a> UpdateDbPostsModel<'a> {
 			modify_date: None,
 		}
 	}
+
 	pub fn set_title(&mut self, value: &'a str) {
 		self.title = Some(value);
 	}
