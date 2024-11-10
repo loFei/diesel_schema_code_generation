@@ -42,10 +42,8 @@ fn main() {
         }
     }
 
-    let update_account = UpdateDbAccountsModel {
-        user_name: Some("Angle"),
-        register_date: None,
-    };
+    let mut update_account = UpdateDbAccountsModel::create();
+    update_account.user_name = Some("Angle");
     DbAccountsService::update_accounts_by_id(conn, acc_data.id, &update_account);
     if let Some(acc) = DbAccountsService::find_accounts_by_id(conn, acc_data.id) {
         println!(

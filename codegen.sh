@@ -158,6 +158,24 @@ generate_model_code() {
   done
   rust_code+="}\n\n"
 
+  if [ $struct_ref_flag -eq 1 ]; then
+    rust_code+="impl Update$model_name<'_> {\n"
+  else
+    rust_code+="impl Update$model_name {\n"
+  fi
+  rust_code+="\tpub fn create() -> Self{\n"
+  rust_code+="\t\tSelf {\n"
+  for field in "${field_cache[@]}"; do
+    IFS="," read -r field_name is_opt_field_type rust_type opt_rust_type rust_ref_type opt_rust_ref_type <<< "$field"
+    if [ "$field_name" == "id" ]; then
+      continue
+    fi
+    rust_code+="\t\t\t$field_name: None,\n"
+  done
+  rust_code+="\t\t}\n"
+  rust_code+="\t}\n"
+  rust_code+="}\n\n"
+
   mkdir -p "$(dirname "$output_file")"
   echo -e "$rust_code" > "$output_file"
   echo -e "${GREEN}==> code generate model: $output_file${RESET}"
@@ -204,11 +222,10 @@ generate_service_code() {
   rust_code+="\t}\n"
   rust_code+="\n"
   rust_code+="\tpub fn find_${table_name}_by_id(conn: &mut SqliteConnection, model_id: i32) -> Option<$model_name> {\n"
-  rust_code+="\t\t$table_name\n"
-  rust_code+="\t\t.find(model_id)\n"
-  rust_code+="\t\t.first(conn)\n"
-  rust_code+="\t\t.optional()\n"
-  rust_code+="\t\t.expect(\"Error loading $table_name\")\n"
+  rust_code+="\t\t$table_name.find(model_id)\n"
+  rust_code+="\t\t\t.first(conn)\n"
+  rust_code+="\t\t\t.optional()\n"
+  rust_code+="\t\t\t.expect(\"Error loading $table_name\")\n"
   rust_code+="\t}\n"
   rust_code+="\n"
   rust_code+="\tpub fn update_${table_name}_by_id(\n"

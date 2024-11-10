@@ -27,11 +27,10 @@ impl DbPostsService {
 	}
 
 	pub fn find_posts_by_id(conn: &mut SqliteConnection, model_id: i32) -> Option<DbPostsModel> {
-		posts
-		.find(model_id)
-		.first(conn)
-		.optional()
-		.expect("Error loading posts")
+		posts.find(model_id)
+			.first(conn)
+			.optional()
+			.expect("Error loading posts")
 	}
 
 	pub fn update_posts_by_id(

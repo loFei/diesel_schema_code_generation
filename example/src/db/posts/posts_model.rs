@@ -37,4 +37,17 @@ pub struct UpdateDbPostsModel<'a> {
 	pub modify_date: Option<&'a chrono::NaiveDateTime>,
 }
 
+impl UpdateDbPostsModel<'_> {
+	pub fn create() -> Self{
+		Self {
+			title: None,
+			body: None,
+			published: None,
+			poster_id: None,
+			create_date: None,
+			modify_date: None,
+		}
+	}
+}
+
 

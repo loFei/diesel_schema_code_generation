@@ -25,4 +25,13 @@ pub struct UpdateDbAccountsModel<'a> {
 	pub register_date: Option<&'a chrono::NaiveDateTime>,
 }
 
+impl UpdateDbAccountsModel<'_> {
+	pub fn create() -> Self{
+		Self {
+			user_name: None,
+			register_date: None,
+		}
+	}
+}
+
 

@@ -27,11 +27,10 @@ impl DbAccountsService {
 	}
 
 	pub fn find_accounts_by_id(conn: &mut SqliteConnection, model_id: i32) -> Option<DbAccountsModel> {
-		accounts
-		.find(model_id)
-		.first(conn)
-		.optional()
-		.expect("Error loading accounts")
+		accounts.find(model_id)
+			.first(conn)
+			.optional()
+			.expect("Error loading accounts")
 	}
 
 	pub fn update_accounts_by_id(
