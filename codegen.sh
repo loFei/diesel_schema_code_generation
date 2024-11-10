@@ -159,7 +159,7 @@ generate_model_code() {
   rust_code+="}\n\n"
 
   if [ $struct_ref_flag -eq 1 ]; then
-    rust_code+="impl Update$model_name<'_> {\n"
+    rust_code+="impl<'a> Update$model_name<'a> {\n"
   else
     rust_code+="impl Update$model_name {\n"
   fi
@@ -174,6 +174,15 @@ generate_model_code() {
   done
   rust_code+="\t\t}\n"
   rust_code+="\t}\n"
+  for field in "${field_cache[@]}"; do
+    IFS="," read -r field_name is_opt_field_type rust_type opt_rust_type rust_ref_type opt_rust_ref_type <<< "$field"
+    if [ "$field_name" == "id" ]; then
+      continue
+    fi
+    rust_code+="\tpub fn set_$field_name(&mut self, value: $rust_ref_type) {\n"
+    rust_code+="\t\tself.$field_name = Some(value);\n"
+    rust_code+="\t}\n\n"
+  done
   rust_code+="}\n\n"
 
   mkdir -p "$(dirname "$output_file")"

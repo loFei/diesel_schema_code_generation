@@ -37,7 +37,7 @@ pub struct UpdateDbPostsModel<'a> {
 	pub modify_date: Option<&'a chrono::NaiveDateTime>,
 }
 
-impl UpdateDbPostsModel<'_> {
+impl<'a> UpdateDbPostsModel<'a> {
 	pub fn create() -> Self{
 		Self {
 			title: None,
@@ -48,6 +48,30 @@ impl UpdateDbPostsModel<'_> {
 			modify_date: None,
 		}
 	}
+	pub fn set_title(&mut self, value: &'a str) {
+		self.title = Some(value);
+	}
+
+	pub fn set_body(&mut self, value: &'a str) {
+		self.body = Some(value);
+	}
+
+	pub fn set_published(&mut self, value: bool) {
+		self.published = Some(value);
+	}
+
+	pub fn set_poster_id(&mut self, value: i32) {
+		self.poster_id = Some(value);
+	}
+
+	pub fn set_create_date(&mut self, value: &'a chrono::NaiveDateTime) {
+		self.create_date = Some(value);
+	}
+
+	pub fn set_modify_date(&mut self, value: &'a chrono::NaiveDateTime) {
+		self.modify_date = Some(value);
+	}
+
 }
 
 
