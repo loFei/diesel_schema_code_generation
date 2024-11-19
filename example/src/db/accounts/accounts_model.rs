@@ -45,7 +45,7 @@ pub struct UpdateDbAccountsModel<'a> {
 }
 
 impl<'a> UpdateDbAccountsModel<'a> {
-	pub fn create() -> Self{
+	pub fn create() -> Self {
 		Self {
 			user_name: None,
 			register_date: None,

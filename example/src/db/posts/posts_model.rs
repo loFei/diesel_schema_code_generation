@@ -77,7 +77,7 @@ pub struct UpdateDbPostsModel<'a> {
 }
 
 impl<'a> UpdateDbPostsModel<'a> {
-	pub fn create() -> Self{
+	pub fn create() -> Self {
 		Self {
 			title: None,
 			body: None,
